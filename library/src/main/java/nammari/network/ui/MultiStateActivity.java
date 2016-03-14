@@ -241,7 +241,6 @@ public abstract class MultiStateActivity extends ActionBarActivity {
      * Control whether the list is being displayed. You can make it not
      * displayed if you are waiting for the initial data to show in it. During
      * this time an indeterminant progress indicator will be shown instead.
-     * <p/>
      * If true, the list view is shown; if false, the progress
      * indicator. The initial value is true.
      *

@@ -73,8 +73,6 @@ public abstract class MultiStateFragment extends Fragment {
      * {@link android.R.id#list android.R.id.list} and can optionally have a
      * sibling view id {@link android.R.id#empty android.R.id.empty} that is to
      * be shown when the list is empty.
-     * <p/>
-     * <p/>
      * If you are overriding this method with your own custom content, consider
      * including the standard layout {@link android.R.layout#list_content} in
      * your layout file, so that you continue to retain all of the standard
@@ -279,7 +277,6 @@ public abstract class MultiStateFragment extends Fragment {
      * Control whether the list is being displayed. You can make it not
      * displayed if you are waiting for the initial data to show in it. During
      * this time an indeterminant progress indicator will be shown instead.
-     * <p/>
      * If true, the list view is shown; if false, the progress
      * indicator. The initial value is true.
      *

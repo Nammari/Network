@@ -54,13 +54,12 @@ public class HackSwipeRefreshLayout extends ViewGroup {
      * indication of a refresh. If an activity wishes to show just the progress
      * animation, it should call setRefreshing(true). To disable the gesture and progress
      * animation, call setEnabled(false) on the view.
-     * <p/>
-     * <p> This layout should be made the parent of the view that will be refreshed as a
+     * This layout should be made the parent of the view that will be refreshed as a
      * result of the gesture and can only support one direct child. This view will
      * also be made the target of the gesture and will be forced to match both the
      * width and the height supplied in this layout. The SwipeRefreshLayout does not
      * provide accessibility events; instead, a menu item must be provided to allow
-     * refresh of the content wherever this gesture is used.</p>
+     * refresh of the content wherever this gesture is used.
      */
 
     private static final long RETURN_TO_ORIGINAL_POSITION_TIMEOUT = 300;
@@ -180,7 +179,7 @@ public class HackSwipeRefreshLayout extends ViewGroup {
     /**
      * Simple constructor to use when creating a SwipeRefreshLayout from code.
      *
-     * @param context
+     * @param context Context
      */
     public HackSwipeRefreshLayout(Context context) {
         this(context, null);
@@ -189,8 +188,8 @@ public class HackSwipeRefreshLayout extends ViewGroup {
     /**
      * Constructor that is called when inflating SwipeRefreshLayout from XML.
      *
-     * @param context
-     * @param attrs
+     * @param context Context
+     * @param attrs   AttributeSet
      */
     public HackSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -227,7 +226,7 @@ public class HackSwipeRefreshLayout extends ViewGroup {
     }
 
     private void animateOffsetToStartPosition(int from, AnimationListener listener) {
-        Log.e("from",""+from);
+        Log.e("from", "" + from);
         mFrom = from;
         mAnimateToStartPosition.reset();
         mAnimateToStartPosition.setDuration(mMediumAnimationDuration);
@@ -239,6 +238,8 @@ public class HackSwipeRefreshLayout extends ViewGroup {
     /**
      * Set the listener to be notified when a refresh is triggered via the swipe
      * gesture.
+     *
+     * @param listener OnRefreshListener
      */
     public void setOnRefreshListener(OnRefreshListener listener) {
         mListener = listener;
@@ -402,7 +403,7 @@ public class HackSwipeRefreshLayout extends ViewGroup {
 
     @Override
     public boolean removeCallbacks(Runnable action) {
-        Log.e("removeCallBack",""+action);
+        Log.e("removeCallBack", "" + action);
         return super.removeCallbacks(action);
 
     }
@@ -472,7 +473,7 @@ public class HackSwipeRefreshLayout extends ViewGroup {
     }
 
     private void updateContentOffsetTop(int targetTop) {
-        Log.e("updateContentOffsetTop","targetTop :"+targetTop);
+        Log.e("updateContentOffsetTop", "targetTop :" + targetTop);
         final int currentTop = mTarget.getTop();
         if (targetTop > mDistanceToTriggerSync) {
             targetTop = (int) mDistanceToTriggerSync;
@@ -484,7 +485,7 @@ public class HackSwipeRefreshLayout extends ViewGroup {
 
     private void setTargetOffsetTopAndBottom(int offset) {
         mTarget.offsetTopAndBottom(offset);
-        Log.e("offset",""+offset);
+        Log.e("offset", "" + offset);
         mCurrentTargetOffsetTop = mTarget.getTop();
     }
 

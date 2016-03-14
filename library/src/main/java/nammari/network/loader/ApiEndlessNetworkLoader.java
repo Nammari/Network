@@ -120,7 +120,6 @@ public abstract class ApiEndlessNetworkLoader<T extends EndlessApiBaseBean> exte
      * call your webservice/api/network call here
      *
      * @return result of loaded data
-     * @throws Exception
      */
     protected final T doInBackground() {
         Logger.logDebug("useMax", "" + useMax.get());

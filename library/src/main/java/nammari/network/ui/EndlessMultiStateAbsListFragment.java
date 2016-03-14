@@ -407,7 +407,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     /**
      * @author nammari
-     *         <p>
      *         This class used to force users of this class to use it as base
      *         class for their main adapter such that when the loader finishes
      *         his task the loaded data can be assigned to the main adapter

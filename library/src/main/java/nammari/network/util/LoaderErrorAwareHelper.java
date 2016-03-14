@@ -20,8 +20,8 @@ public class LoaderErrorAwareHelper {
      * status array not from the loader it self by using containsError to keep
      * every thing synchronized)
      *
-     * @param listener
-     * @return
+     * @param listener LoaderErrorAwareUI
+     * @return true if at least one of loaders contains error
      */
     public static boolean atLeastOneLoaderHasError(
             LoaderErrorAwareUI listener) {
@@ -51,7 +51,7 @@ public class LoaderErrorAwareHelper {
     /**
      * Any loader report an error as it status should be retried
      *
-     * @param listener
+     * @param listener LoaderErrorAwareUI
      */
     public static void retryLoadersWithError(LoaderErrorAwareUI listener) {
 
@@ -84,8 +84,8 @@ public class LoaderErrorAwareHelper {
      * Create a brand new Status array with STATUS_UNDEFINED(i.e no loaded yet)
      * for all loader ids
      *
-     * @param listener
-     * @return
+     * @param listener LoaderErrorAwareUI
+     * @return SparseArray map loader id to it status ( STATUS_UNDEFINED,STATUS_LOADED_SUCCESSFULLY,STATUS_LOADED_WITH_ERROR)
      */
     public static SparseIntArray createNewLoaderStatusArray(
             LoaderErrorAwareUI listener) {
@@ -112,8 +112,8 @@ public class LoaderErrorAwareHelper {
      * accordingly Note:This method should be called in the onLoadFinished only
      * once at the beginning.
      *
-     * @param listener
-     * @param loader
+     * @param listener LoaderErrorAwareUI
+     * @param loader   ErrorAwareLoader
      */
     public static void updateSingleLoaderStatus(
             LoaderErrorAwareUI listener, ErrorAwareLoader loader) {
@@ -203,8 +203,8 @@ public class LoaderErrorAwareHelper {
     /**
      * Get Error Message from the first loader that has an error and not null
      *
-     * @param listener
-     * @return
+     * @param listener LoaderErrorAwareUI
+     * @return error message
      */
     public static String getErrorMessageFromLoaders(
             LoaderErrorAwareUI listener) {

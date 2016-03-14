@@ -62,7 +62,7 @@ public abstract class EndlessNetworkLoader<T> extends AsyncTaskLoader<T>
      * call your webservice/api/network call here
      *
      * @return result of loaded data
-     * @throws Exception
+     * @throws Exception while executing doInBackground
      */
     protected abstract T doInBackground() throws Exception;
 
@@ -108,6 +108,7 @@ public abstract class EndlessNetworkLoader<T> extends AsyncTaskLoader<T>
     /**
      * Provide next load logic . i.e increment page count ( page = page +1) data
      * : new loaded data
+     * @param data  T
      */
     protected abstract void updateNextLoadParameters(T data);
 
