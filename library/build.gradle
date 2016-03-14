@@ -49,6 +49,7 @@ android {
 def siteUrl = 'https://github.com/Nammari/Network'      // Homepage URL of the library
 def gitUrl = 'https://github.com/Nammari/Network.git'   // Git repository URL
 group = "nammari.network"                                        // Maven Group ID for the artifact
+version ="1.0.0"
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
@@ -136,12 +137,21 @@ bintray {
 
     configurations = ['archives']
     pkg {
-        repo = "maven"
+        repo = "android"
         name = "Network"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         publish = true
+        version {
+            // the 2 functions here, are building the version number
+            name = "1.0.0" // i.e. 1.0.0-SomeName
+            vcsTag = "1.0.0"  // 1.0.0
+            gpg {
+                // keys are uploaded
+                sign = true
+            }
+        }
     }
 }
 afterEvaluate {
