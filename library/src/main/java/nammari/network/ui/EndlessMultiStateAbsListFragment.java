@@ -247,19 +247,50 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             this.inflater = LayoutInflater.from(context);
         }
 
+//        @Override
+//        public int getItemCount() {
+//            return mainAdapter.getItemCount()
+//
+//                    + (
+//                    supportEndless() ?
+//                            (getListType() == LIST_TYPE.GRID_VIEW ?
+//                                    (hasError() ? 1
+//                                            : 0)
+//                                    : ((isLoading() && mainAdapter.getItemCount() == 0)// ...this
+//                                    // is
+//                                    // the first
+//                                    // load
+//                                    || hasMoreResults() // ...or there's another
+//                                    // page
+//                                    || hasError() // ...or there's an error
+//                                    ? 1 : 0)) : 0);
+//        }
+
         @Override
         public int getItemCount() {
             return mainAdapter.getItemCount()
-                    + (supportEndless() ? (getListType() == LIST_TYPE.GRID_VIEW ? (hasError() ? 1
-                    : 0)
-                    : ((isLoading() && mainAdapter.getItemCount() == 0)// ...this
-                    // is
-                    // the first
-                    // load
-                    || hasMoreResults() // ...or there's another
-                    // page
-                    || hasError() // ...or there's an error
-                    ? 1 : 0)) : 0);
+                    + (
+                    supportEndless()
+                            ?
+                            (
+//                                    getListType() == LIST_TYPE.GRID_VIEW ? (
+//                                            hasError() ? 1 : 0
+//                                    )
+//                                            :
+                                    (
+                                            (
+                                                    isLoading() && mainAdapter.getItemCount() == 0
+                                            )// ...this
+                                                    // is
+                                                    // the first
+                                                    // load
+                                                    || hasMoreResults() // ...or there's another
+                                                    // page
+                                                    || hasError() // ...or there's an error
+                                                    ? 1 : 0
+                                    )
+                            )
+                            : 0);
         }
 
         @Override
