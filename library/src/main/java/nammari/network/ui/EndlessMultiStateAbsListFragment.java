@@ -236,15 +236,15 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     protected class NetworkWrapperAdapter extends RecyclerView.Adapter {
 
-        private static final int VIEW_TYPE_LOADING = 0;
+        private static final int VIEW_TYPE_LOADING = 22;
         private final MainNetworkAdapter<T> mainAdapter;
-        private final LayoutInflater infalter;
+        private final LayoutInflater inflater;
 
         public NetworkWrapperAdapter(MainNetworkAdapter<T> mainAdapter,
                                      Context context) {
             super();
             this.mainAdapter = mainAdapter;
-            this.infalter = LayoutInflater.from(context);
+            this.inflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -272,7 +272,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_LOADING) {
-                return new ListLoadingViewHolder(infalter.inflate(R.layout.list_endless_loading_view, parent, false));
+                return new ListLoadingViewHolder(inflater.inflate(R.layout.list_endless_loading_view, parent, false));
             } else {
                 return mainAdapter.onCreateViewHolder(parent, viewType - 1);
             }
@@ -319,7 +319,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     || position >= mainAdapter.getItemCount()) {
                 return VIEW_TYPE_LOADING;
             } else {
-                return mainAdapter.getItemViewType(position) + 1;
+                return mainAdapter.getItemViewType(position);
             }
 
         }
