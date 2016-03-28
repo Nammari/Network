@@ -36,6 +36,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
     static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
     static final int INTERNAL_ERROR_CONTAINER_ID = 0x00ff0004;
+    static final int INTERNAL_REFRESH_LAYOUT_ID = 0x00ff0005;
 
     public enum INTERAL_VIEW_TYPE {
         LIST, LOADING, ERROR
@@ -77,7 +78,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     View mAbsListContainer;
     View mErrorView;
     TextView mErrorText;
-    INTERAL_VIEW_TYPE currentVisibileView = INTERAL_VIEW_TYPE.LIST;
+    INTERAL_VIEW_TYPE currentVisibleView = INTERAL_VIEW_TYPE.LIST;
 
     public MultiStateAbsFragment() {
     }
@@ -129,6 +130,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
      * your layout file, so that you continue to retain all of the standard
      * behavior of ListFragment. In particular, this is currently the only way
      * to have the built-in indeterminant progress state be shown.
+     *
      * @return Return the View for the fragment's UI.
      */
     @SuppressWarnings("deprecation")
@@ -237,6 +239,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
                             SwipeRefreshLayout.LayoutParams.FILL_PARENT
                     )
             );
+            swipeRefreshLayout.setId(INTERNAL_REFRESH_LAYOUT_ID);
             swipeRefreshLayout.setOnRefreshListener(swipeListener);
             lframe.addView(swipeRefreshLayout, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.FILL_PARENT,
@@ -310,6 +313,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
     /**
      * * Provide the adapter for the recyclerview.
+     *
      * @param adapter RecyclerView.Adapter
      */
     public void setListAdapter(RecyclerView.Adapter adapter) {
@@ -317,7 +321,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
         mAdapter = adapter;
         if (recyclerView != null) {
             recyclerView.setAdapter(adapter);
-            if (!(currentVisibileView == INTERAL_VIEW_TYPE.LIST) && !hadAdapter) {
+            if (!(currentVisibleView == INTERAL_VIEW_TYPE.LIST) && !hadAdapter) {
                 // The list was hidden, and previously didn't have an
                 // adapter. It is now time to show it.
                 showRecylcerView(getView().getWindowToken() != null);
@@ -327,16 +331,12 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
 
     /**
-     *
      * @return recyclerview Get the activity's recyclerview  widget.
      */
     public RecyclerView getRecyclerView() {
         ensureAbsList();
         return recyclerView;
     }
-
-
-
 
 
     protected void showRecylcerView(boolean animate) {
@@ -373,10 +373,10 @@ public abstract class MultiStateAbsFragment extends Fragment {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
         }
-        if (currentVisibileView == type)
+        if (currentVisibleView == type)
             return;
-        INTERAL_VIEW_TYPE previous = currentVisibileView;
-        currentVisibileView = type;
+        INTERAL_VIEW_TYPE previous = currentVisibleView;
+        currentVisibleView = type;
 
         if (animate) {
             switch (type) {
@@ -451,6 +451,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
     /**
      * * Get the ListAdapter associated with this activity's ListView.
+     *
      * @return ListAdapter
      */
     public RecyclerView.Adapter getListAdapter() {
@@ -472,6 +473,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
             mProgressContainer = root
                     .findViewById(INTERNAL_PROGRESS_CONTAINER_ID);
             mAbsListContainer = root.findViewById(INTERNAL_LIST_CONTAINER_ID);
+            swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(INTERNAL_REFRESH_LAYOUT_ID);
             View rawListView = root.findViewById(android.R.id.list);
             recyclerView = (RecyclerView) rawListView;
         }
