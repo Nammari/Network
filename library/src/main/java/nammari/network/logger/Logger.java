@@ -23,4 +23,9 @@ public class Logger {
             Log.i(tag, str);
     }
 
+
+    public static void setEnabled(boolean enabled) {
+        ENABLED = enabled;
+    }
+
 }
