@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -271,11 +272,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_LOADING) {
-                if (getListType() == LIST_TYPE.GRID_VIEW) {
-                    return new GridLoadingViewHolder(infalter.inflate(R.layout.grid_retry_button, parent, false));
-                } else {
-                    return new ListLoadingViewHolder(infalter.inflate(R.layout.list_endless_loading_view, parent, false));
-                }
+                return new ListLoadingViewHolder(infalter.inflate(R.layout.list_endless_loading_view, parent, false));
             } else {
                 return mainAdapter.onCreateViewHolder(parent, viewType - 1);
             }
@@ -287,24 +284,22 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             if (position < mainAdapter.getItemCount()) {
                 mainAdapter.onBindViewHolder(holder, position);
             } else {
-                if (holder instanceof GridLoadingViewHolder) {
-                    holder.itemView.setOnClickListener(EndlessMultiStateAbsListFragment.this);
+
+                ListLoadingViewHolder holder1 = (ListLoadingViewHolder) holder;
+                if (hasError() && !isLoading()) {
+                    // show error
+                    holder1.loading_container
+                            .setVisibility(View.GONE);
+                    holder1.error_container.setVisibility(View.VISIBLE);
+                    holder1.button1
+                            .setOnClickListener(EndlessMultiStateAbsListFragment.this);
                 } else {
-                    ListLoadingViewHolder holder1 = (ListLoadingViewHolder) holder;
-                    if (hasError() && !isLoading()) {
-                        // show error
-                        holder1.loading_container
-                                .setVisibility(View.GONE);
-                        holder1.error_container.setVisibility(View.VISIBLE);
-                        holder1.button1
-                                .setOnClickListener(EndlessMultiStateAbsListFragment.this);
-                    } else {
-                        // show loading
-                        holder1.error_container
-                                .setVisibility(View.GONE);
-                        holder1.loading_container.setVisibility(View.VISIBLE);
-                    }
+                    // show loading
+                    holder1.error_container
+                            .setVisibility(View.GONE);
+                    holder1.loading_container.setVisibility(View.VISIBLE);
                 }
+
             }
         }
 
@@ -336,12 +331,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     }
 
-    static class GridLoadingViewHolder extends RecyclerView.ViewHolder {
-
-        public GridLoadingViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 
     static class ListLoadingViewHolder extends RecyclerView.ViewHolder {
         View loading_container;
@@ -556,5 +545,13 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         }
     }
 
-
+    @Override
+    protected final GridLayoutManager.SpanSizeLookup getSpanSizeLookup() {
+        return new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return adapter.getItemViewType(position) == NetworkWrapperAdapter.VIEW_TYPE_LOADING ? 1 : getGridSpan();
+            }
+        };
+    }
 }
