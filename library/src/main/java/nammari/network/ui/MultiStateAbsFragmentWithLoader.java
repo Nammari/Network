@@ -16,7 +16,7 @@ public abstract class MultiStateAbsFragmentWithLoader extends MultiStateAbsFragm
 
     }
 
-    private SparseIntArray loadersStatus;
+    protected SparseIntArray loadersStatus;
 
     protected final void restLoadersState() {
         loadersStatus = LoaderErrorAwareHelper.createNewLoaderStatusArray(this);
@@ -60,6 +60,7 @@ public abstract class MultiStateAbsFragmentWithLoader extends MultiStateAbsFragm
 
         return loadersStatus;
     }
+
     @Override
     public final LoaderManager getCorrectLoaderManager() {
         return getLoaderManager();

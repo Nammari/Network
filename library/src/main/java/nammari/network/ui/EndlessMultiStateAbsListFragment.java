@@ -247,24 +247,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             this.inflater = LayoutInflater.from(context);
         }
 
-//        @Override
-//        public int getItemCount() {
-//            return mainAdapter.getItemCount()
-//
-//                    + (
-//                    supportEndless() ?
-//                            (getListType() == LIST_TYPE.GRID_VIEW ?
-//                                    (hasError() ? 1
-//                                            : 0)
-//                                    : ((isLoading() && mainAdapter.getItemCount() == 0)// ...this
-//                                    // is
-//                                    // the first
-//                                    // load
-//                                    || hasMoreResults() // ...or there's another
-//                                    // page
-//                                    || hasError() // ...or there's an error
-//                                    ? 1 : 0)) : 0);
-//        }
 
         @Override
         public int getItemCount() {
@@ -273,10 +255,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     supportEndless()
                             ?
                             (
-//                                    getListType() == LIST_TYPE.GRID_VIEW ? (
-//                                            hasError() ? 1 : 0
-//                                    )
-//                                            :
+
                                     (
                                             (
                                                     isLoading() && mainAdapter.getItemCount() == 0
@@ -464,6 +443,19 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             }
         }
         return true;
+    }
+
+    protected boolean isLoaderStatusUndefined() {
+        if (isAdded()) {
+            try {
+                int status = loadersStatus.get(getEndlessNetworkLoaderId());
+                return status == LoaderErrorAwareHelper.STATUS_UNDEFINED;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
