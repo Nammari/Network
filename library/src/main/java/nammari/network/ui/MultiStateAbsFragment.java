@@ -493,6 +493,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     }
 
     public void setRefreshForSwipeRefreshLayout(boolean refreshing) {
-        swipeRefreshLayout.setRefreshing(refreshing);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(refreshing);
     }
 }
