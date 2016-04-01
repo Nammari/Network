@@ -119,7 +119,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
         super.onViewCreated(view, savedInstanceState);
         RecyclerView list = getRecyclerView();
-        list.setFadingEdgeLength(0);
         if (includeItemDecoration()) {
             int paddingBetweenItems = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2.0f, getResources().getDisplayMetrics());
             if (getListType() == LIST_TYPE.GRID_VIEW || getListType() == LIST_TYPE.STAGGERED_GRID) {
@@ -225,13 +224,15 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (supportEndless()) {
+            adapter = new NetworkWrapperAdapter(getMainAdapter(getActivity()),
+                    getActivity());
+            setListAdapter(adapter);
 
-        adapter = new NetworkWrapperAdapter(getMainAdapter(getActivity()),
-                getActivity());
-        setListAdapter(adapter);
-        Logger.logInfo("from onActivityCreated", "from onActivityCreate");
-        showLoadingView(true);
-        getLoaderManager().initLoader(getEndlessNetworkLoaderId(), null, this);
+            Logger.logInfo("from onActivityCreated", "from onActivityCreate");
+            showLoadingView(true);
+            getLoaderManager().initLoader(getEndlessNetworkLoaderId(), null, this);
+        }
     }
 
     protected class NetworkWrapperAdapter extends RecyclerView.Adapter {
