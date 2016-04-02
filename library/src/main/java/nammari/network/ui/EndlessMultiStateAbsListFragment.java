@@ -501,7 +501,9 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     @SuppressWarnings("unchecked")
     protected void refresh(boolean forceRefresh) {
-
+        if (!supportEndless()) {
+            return;
+        }
         if (isLoading() && !forceRefresh) {
             return;
         }
