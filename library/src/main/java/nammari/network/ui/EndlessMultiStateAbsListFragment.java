@@ -572,10 +572,13 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     @Override
     protected final GridLayoutManager.SpanSizeLookup getSpanSizeLookup() {
+        if (!supportEndless()) {
+            return super.getSpanSizeLookup();
+        }
         return new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return supportEndless() ? getGridSpan() : ((adapter.getItemViewType(position) == NetworkWrapperAdapter.VIEW_TYPE_LOADING) ? getGridSpan() : 1);
+                return ((adapter.getItemViewType(position) == NetworkWrapperAdapter.VIEW_TYPE_LOADING) ? getGridSpan() : 1);
             }
         };
     }
