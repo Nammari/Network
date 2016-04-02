@@ -547,8 +547,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     @Override
     public void showErrorUI(boolean animate) {
-
-        if (getAdapter().getMainAdapter().getItemCount() > 1) {
+        RecyclerView.Adapter adapter = supportEndless() ? getAdapter().getMainAdapter() : getRecyclerView().getAdapter();
+        if (adapter.getItemCount() > 1) {
             // show the list
             showRecylcerView(isResumed());
             return;
@@ -564,7 +564,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
     protected void onSwipeRefresh() {
         super.onSwipeRefresh();
         mHandler.post(mForceRefresh);
-        if (getAdapter().getItemCount() > 1) {
+        RecyclerView.Adapter adapter = supportEndless() ? getAdapter() : getRecyclerView().getAdapter();
+        if (adapter.getItemCount() > 1) {
             showMainUI(true);
         }
     }
