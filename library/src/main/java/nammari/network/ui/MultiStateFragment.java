@@ -140,7 +140,7 @@ public abstract class MultiStateFragment extends Fragment {
         } else {
             customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
             customErrorView.setVisibility(View.GONE);
-            mEmptyView = customErrorView;
+            mErrorView = customErrorView;
             mErrorText = (TextView) customErrorView.findViewById(android.R.id.text1);
             root.addView(customErrorView, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
