@@ -36,9 +36,6 @@ public abstract class MultiStateFragment extends Fragment {
         MAIN, LOADING, ERROR, EMPTY
     }
 
-    ;
-
-
     protected abstract int getMainViewLayoutId();
 
 
@@ -50,7 +47,7 @@ public abstract class MultiStateFragment extends Fragment {
     TextView mErrorText;
     SwipeRefreshLayout mSwipeToRefresh;
 
-    INTERNAL_VIEW_TYPE currentVisibileView = INTERNAL_VIEW_TYPE.MAIN;
+    INTERNAL_VIEW_TYPE currentVisibleView = INTERNAL_VIEW_TYPE.MAIN;
 
     public MultiStateFragment() {
     }
@@ -105,7 +102,6 @@ public abstract class MultiStateFragment extends Fragment {
         LinearLayout eframe = new LinearLayout(context);
         eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
         eframe.setOrientation(LinearLayout.VERTICAL);
-
         eframe.setGravity(Gravity.CENTER);
         eframe.setVisibility(View.GONE);
         ImageView error_image = new ImageView(context);
@@ -313,10 +309,10 @@ public abstract class MultiStateFragment extends Fragment {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
         }
-        if (currentVisibileView == type)
+        if (currentVisibleView == type)
             return;
-        INTERNAL_VIEW_TYPE previous = currentVisibileView;
-        currentVisibileView = type;
+        INTERNAL_VIEW_TYPE previous = currentVisibleView;
+        currentVisibleView = type;
 
         if (animate) {
             switch (type) {
@@ -439,7 +435,6 @@ public abstract class MultiStateFragment extends Fragment {
                 }
             }
             break;
-
         }
     }
 

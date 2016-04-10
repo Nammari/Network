@@ -2,9 +2,9 @@ package nammari.network.loader;
 
 import android.content.Context;
 
-import nammari.network.beans.BaseApiBean;
-
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import nammari.network.beans.BaseApiBean;
 
 
 /**

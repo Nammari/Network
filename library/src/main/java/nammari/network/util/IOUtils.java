@@ -6,14 +6,14 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Build;
 
-import nammari.network.logger.Logger;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import nammari.network.logger.Logger;
 
 /**
  * Created by nammari on 8/10/14.

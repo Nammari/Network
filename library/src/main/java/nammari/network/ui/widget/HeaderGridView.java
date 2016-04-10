@@ -32,9 +32,9 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
-import nammari.network.R;
-
 import java.util.ArrayList;
+
+import nammari.network.R;
 
 /**
  * A {@link GridView} that supports adding header rows in a

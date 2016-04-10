@@ -12,15 +12,11 @@ import nammari.network.util.LoaderErrorAwareHelper;
 public abstract class MultiStateActivityWithLoader extends MultiStateActivity implements LoaderErrorAwareHelper.LoaderErrorAwareUI {
 
 
-
-
     private SparseIntArray loadersStatus;
 
     protected final void restLoadersState() {
         loadersStatus = LoaderErrorAwareHelper.createNewLoaderStatusArray(this);
     }
-
-
 
 
     @Override
@@ -71,10 +67,6 @@ public abstract class MultiStateActivityWithLoader extends MultiStateActivity im
 
         return loadersStatus;
     }
-
-
-
-
 
 
     @Override
