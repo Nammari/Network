@@ -2,7 +2,7 @@ package nammari.network.ui;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ import nammari.network.util.StringUtils;
 /**
  * Created by nammari on 11/29/14.
  */
-public abstract class MultiStateActivity extends ActionBarActivity {
+public abstract class MultiStateActivity extends AppCompatActivity {
 
 
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0001;
