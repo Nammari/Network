@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import nammari.network.R;
+import nammari.network.ui.widget.EmptyViewRecyclerView;
 import nammari.network.ui.widget.ListSwipeRefreshLayout;
 import nammari.network.util.StringUtils;
 
@@ -38,8 +40,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     static final int INTERNAL_ERROR_CONTAINER_ID = 0x00ff0004;
     static final int INTERNAL_REFRESH_LAYOUT_ID = 0x00ff0005;
 
-
-    public enum INTERNAL_VIEW {
+    public enum INTERAL_VIEW_TYPE {
         LIST, LOADING, ERROR
     }
 
@@ -73,13 +74,13 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
 
     RecyclerView.Adapter mAdapter;
-    RecyclerView recyclerView;
+    EmptyViewRecyclerView recyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     View mProgressContainer;
     View mAbsListContainer;
     View mErrorView;
     TextView mErrorText;
-    INTERNAL_VIEW currentVisibleView = INTERNAL_VIEW.LIST;
+    INTERAL_VIEW_TYPE currentVisibleView = INTERAL_VIEW_TYPE.LIST;
 
     public MultiStateAbsFragment() {
     }
@@ -211,7 +212,8 @@ public abstract class MultiStateAbsFragment extends Fragment {
         FrameLayout lframe = new FrameLayout(context);
         lframe.setId(INTERNAL_LIST_CONTAINER_ID);
 
-        RecyclerView lv = new RecyclerView(getActivity());
+        EmptyViewRecyclerView lv = new EmptyViewRecyclerView(getActivity());
+        lv.setEmptyView(getEmptyView());
         switch (getListType()) {
             case LIST_VIEW:
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -322,7 +324,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
         mAdapter = adapter;
         if (recyclerView != null) {
             recyclerView.setAdapter(adapter);
-            if (!(currentVisibleView == INTERNAL_VIEW.LIST) && !hadAdapter) {
+            if (!(currentVisibleView == INTERAL_VIEW_TYPE.LIST) && !hadAdapter) {
                 // The list was hidden, and previously didn't have an
                 // adapter. It is now time to show it.
                 showRecylcerView(getView().getWindowToken() != null);
@@ -342,16 +344,16 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
     protected void showRecylcerView(boolean animate) {
 
-        setViewShown(INTERNAL_VIEW.LIST, animate);
+        setViewShown(INTERAL_VIEW_TYPE.LIST, animate);
     }
 
     protected void showErrorView(boolean animate) {
 
-        setViewShown(INTERNAL_VIEW.ERROR, animate);
+        setViewShown(INTERAL_VIEW_TYPE.ERROR, animate);
     }
 
     protected void showLoadingView(boolean animate) {
-        setViewShown(INTERNAL_VIEW.LOADING, animate);
+        setViewShown(INTERAL_VIEW_TYPE.LOADING, animate);
     }
 
     /**
@@ -364,7 +366,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
      * @param animate If true, an animation will be used to transition to the new
      *                state.
      */
-    private void setViewShown(INTERNAL_VIEW type, boolean animate) {
+    private void setViewShown(INTERAL_VIEW_TYPE type, boolean animate) {
         ensureAbsList();
         if (mProgressContainer == null) {
             throw new IllegalStateException(
@@ -376,13 +378,13 @@ public abstract class MultiStateAbsFragment extends Fragment {
         }
         if (currentVisibleView == type)
             return;
-        INTERNAL_VIEW previous = currentVisibleView;
+        INTERAL_VIEW_TYPE previous = currentVisibleView;
         currentVisibleView = type;
 
         if (animate) {
             switch (type) {
                 case ERROR:
-                    if (previous == INTERNAL_VIEW.LOADING) {
+                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
@@ -395,7 +397,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
                             getActivity(), android.R.anim.fade_in));
                     break;
                 case LIST:
-                    if (previous == INTERNAL_VIEW.LOADING) {
+                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
@@ -408,7 +410,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
                     break;
                 case LOADING:
-                    if (previous == INTERNAL_VIEW.LIST) {
+                    if (previous == INTERAL_VIEW_TYPE.LIST) {
                         mAbsListContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
@@ -468,15 +470,15 @@ public abstract class MultiStateAbsFragment extends Fragment {
         if (root == null) {
             throw new IllegalStateException("Content view not yet created");
         }
-        if (root instanceof RecyclerView) {
-            recyclerView = (RecyclerView) root;
+        if (root instanceof EmptyViewRecyclerView) {
+            recyclerView = (EmptyViewRecyclerView) root;
         } else {
             mProgressContainer = root
                     .findViewById(INTERNAL_PROGRESS_CONTAINER_ID);
             mAbsListContainer = root.findViewById(INTERNAL_LIST_CONTAINER_ID);
             swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(INTERNAL_REFRESH_LAYOUT_ID);
             View rawListView = root.findViewById(android.R.id.list);
-            recyclerView = (RecyclerView) rawListView;
+            recyclerView = (EmptyViewRecyclerView) rawListView;
         }
         if (mAdapter != null) {
             RecyclerView.Adapter adapter = mAdapter;
@@ -491,6 +493,11 @@ public abstract class MultiStateAbsFragment extends Fragment {
             }
         }
         mHandler.post(mRequestFocus);
+    }
+
+
+    protected View getEmptyView() {
+        return null;
     }
 
     public void setRefreshForSwipeRefreshLayout(boolean refreshing) {
