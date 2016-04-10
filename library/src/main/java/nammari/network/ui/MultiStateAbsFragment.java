@@ -92,26 +92,26 @@ public abstract class MultiStateAbsFragment extends Fragment {
         if (!StringUtils.isBlink((String) text)) {
             mErrorText.setText(text);
         } else {
-            mErrorText.setText(R.string.no_connection);
+            mErrorText.setText(R.string.nammarinetwork__general_error);
         }
 
     }
 
 
     protected int getSwipeToRefreshColorSchemeResource1() {
-        return R.color.schema1;
+        return R.color.nammarinetwork__schema1;
     }
 
     protected int getSwipeToRefreshColorSchemeResource2() {
-        return R.color.schema2;
+        return R.color.nammarinetwork__schema2;
     }
 
     protected int getSwipeToRefreshColorSchemeResource3() {
-        return R.color.schema3;
+        return R.color.nammarinetwork__schema3;
     }
 
     protected int getSwipeToRefreshColorSchemeResource4() {
-        return R.color.schema4;
+        return R.color.nammarinetwork__schema4;
     }
 
 
@@ -153,7 +153,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
             eframe.setGravity(Gravity.CENTER);
             eframe.setVisibility(View.GONE);
             ImageView error_image = new ImageView(context);
-            error_image.setImageResource(R.drawable.alert_error);
+            error_image.setImageResource(R.drawable.nammarinetwork__alert_error);
             final float scale = getResources().getDisplayMetrics().density;
 
             eframe.addView(error_image, new FrameLayout.LayoutParams(
@@ -162,7 +162,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
             // ViewGroup.LayoutParams.WRAP_CONTENT));
             mErrorText = new TextView(context);
             mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-            mErrorText.setText(R.string.no_connection);
+            mErrorText.setText(R.string.nammarinetwork__general_error);
             mErrorText.setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -172,7 +172,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
             eframe.addView(mErrorText, errorTextLayoutParams);
 
             Button retry = new Button(context);
-            retry.setText(R.string.retry);
+            retry.setText(R.string.nammarinetwork__retry);
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -190,6 +190,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
             customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
             customErrorView.setVisibility(View.GONE);
             mErrorView = customErrorView;
+            mErrorText = (TextView) customErrorView.findViewById(android.R.id.text1);
             root.addView(customErrorView, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));

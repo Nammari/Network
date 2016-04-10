@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="retry">إعادة المحاولة</string>
-    <string name="no_connection">لا يوجد اتصال بالإنترنت</string>
-    <string name="action_refresh">تحديث</string>
-    <bool name="is_arabic">true</bool>
+    <string name="nammarinetwork__retry">إعادة المحاولة</string>
+    <string name="nammarinetwork__no_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="nammarinetwork__action_refresh">تحديث</string>
+    <bool name="nammarinetwork__is_arabic">true</bool>
 </resources>

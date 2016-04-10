@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">NetworkLibrary</string>
-    <string name="retry">RETRY</string>
-    <string name="no_connection">No connection</string>
-    <string name="action_refresh">Refresh</string>
-    <bool name="is_arabic">false</bool>
+    <string name="nammarinetwork__app_name">NetworkLibrary</string>
+    <string name="nammarinetwork__retry">RETRY</string>
+    <string name="nammarinetwork__no_connection">No connection</string>
+    <string name="nammarinetwork__general_error">Error occur , please try later.</string>
+    <string name="nammarinetwork__action_refresh">Refresh</string>
+    <bool name="nammarinetwork__is_arabic">false</bool>
 </resources>

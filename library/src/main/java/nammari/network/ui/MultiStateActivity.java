@@ -60,7 +60,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         if (!StringUtils.isBlink((String) text)) {
             mErrorText.setText(text);
         } else {
-            mErrorText.setText(R.string.no_connection);
+            mErrorText.setText(R.string.nammarinetwork__general_error);
         }
 
     }
@@ -90,7 +90,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             eframe.setGravity(Gravity.CENTER);
             eframe.setVisibility(View.GONE);
             ImageView error_image = new ImageView(this);
-            error_image.setImageResource(R.drawable.alert_error);
+            error_image.setImageResource(R.drawable.nammarinetwork__alert_error);
             final float scale = getResources().getDisplayMetrics().density;
 
             eframe.addView(error_image, new FrameLayout.LayoutParams(
@@ -99,7 +99,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             // ViewGroup.LayoutParams.WRAP_CONTENT));
             mErrorText = new TextView(this);
             mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-            mErrorText.setText(R.string.no_connection);
+            mErrorText.setText(R.string.nammarinetwork__general_error);
             mErrorText.setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -109,7 +109,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             eframe.addView(mErrorText, errorTextLayoutParams);
 
             Button retry = new Button(this);
-            retry.setText(R.string.retry);
+            retry.setText(R.string.nammarinetwork__retry);
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -127,6 +127,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
             customErrorView.setVisibility(View.GONE);
             mEmptyView = customErrorView;
+            mErrorText = (TextView) customErrorView.findViewById(android.R.id.text1);
             root.addView(customErrorView, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -226,19 +227,19 @@ public abstract class MultiStateActivity extends AppCompatActivity {
 
 
     protected int getSwipeToRefreshColorSchemeResource1() {
-        return R.color.schema1;
+        return R.color.nammarinetwork__schema1;
     }
 
     protected int getSwipeToRefreshColorSchemeResource2() {
-        return R.color.schema2;
+        return R.color.nammarinetwork__schema2;
     }
 
     protected int getSwipeToRefreshColorSchemeResource3() {
-        return R.color.schema3;
+        return R.color.nammarinetwork__schema3;
     }
 
     protected int getSwipeToRefreshColorSchemeResource4() {
-        return R.color.schema4;
+        return R.color.nammarinetwork__schema4;
     }
 
 

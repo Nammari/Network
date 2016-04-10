@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="schema1">#5C707C</color>
-    <color name="schema2">#99CC33</color>
-    <color name="schema3">#999999</color>
-    <color name="schema4">#669900</color>
+    <color name="nammarinetwork__schema1">#5C707C</color>
+    <color name="nammarinetwork__schema2">#99CC33</color>
+    <color name="nammarinetwork__schema3">#999999</color>
+    <color name="nammarinetwork__schema4">#669900</color>
 </resources>

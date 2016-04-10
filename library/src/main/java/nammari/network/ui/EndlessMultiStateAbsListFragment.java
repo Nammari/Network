@@ -288,7 +288,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_LOADING) {
-                return new ListLoadingViewHolder(inflater.inflate((getAdapterErrorLoadingErrorViewId() == 0 ? R.layout.list_endless_loading_view : getAdapterErrorLoadingErrorViewId()), parent, false));
+                return new ListLoadingViewHolder(inflater.inflate((getAdapterErrorLoadingErrorViewId() == 0 ? R.layout.nammarinetwork__list_endless_loading_view : getAdapterErrorLoadingErrorViewId()), parent, false));
             } else {
                 return mainAdapter.onCreateViewHolder(parent, viewType - 1);
             }

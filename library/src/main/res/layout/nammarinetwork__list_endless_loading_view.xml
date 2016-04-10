@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="11dp"
-            android:src="@drawable/alert_error" />
+            android:src="@drawable/nammarinetwork__alert_error" />
 
         <TextView
             android:id="@+id/nammarinetwork__textView1"
@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="2dp"
-            android:text="@string/no_connection"
+            android:text="@string/nammarinetwork__general_error"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="11dp"
-            android:text="@string/retry" />
+            android:text="@string/nammarinetwork__retry" />
     </LinearLayout>
 
     <RelativeLayout
