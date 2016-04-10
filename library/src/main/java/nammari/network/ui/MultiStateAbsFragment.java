@@ -38,7 +38,9 @@ public abstract class MultiStateAbsFragment extends Fragment {
     static final int INTERNAL_ERROR_CONTAINER_ID = 0x00ff0004;
     static final int INTERNAL_REFRESH_LAYOUT_ID = 0x00ff0005;
 
-    public enum INTERAL_VIEW_TYPE {
+
+
+    public enum INTERNAL_VIEW {
         LIST, LOADING, ERROR
     }
 
@@ -78,7 +80,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     View mAbsListContainer;
     View mErrorView;
     TextView mErrorText;
-    INTERAL_VIEW_TYPE currentVisibleView = INTERAL_VIEW_TYPE.LIST;
+    INTERNAL_VIEW currentVisibleView = INTERNAL_VIEW.LIST;
 
     public MultiStateAbsFragment() {
     }
@@ -321,7 +323,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
         mAdapter = adapter;
         if (recyclerView != null) {
             recyclerView.setAdapter(adapter);
-            if (!(currentVisibleView == INTERAL_VIEW_TYPE.LIST) && !hadAdapter) {
+            if (!(currentVisibleView == INTERNAL_VIEW.LIST) && !hadAdapter) {
                 // The list was hidden, and previously didn't have an
                 // adapter. It is now time to show it.
                 showRecylcerView(getView().getWindowToken() != null);
@@ -341,16 +343,16 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
     protected void showRecylcerView(boolean animate) {
 
-        setViewShown(INTERAL_VIEW_TYPE.LIST, animate);
+        setViewShown(INTERNAL_VIEW.LIST, animate);
     }
 
     protected void showErrorView(boolean animate) {
 
-        setViewShown(INTERAL_VIEW_TYPE.ERROR, animate);
+        setViewShown(INTERNAL_VIEW.ERROR, animate);
     }
 
     protected void showLoadingView(boolean animate) {
-        setViewShown(INTERAL_VIEW_TYPE.LOADING, animate);
+        setViewShown(INTERNAL_VIEW.LOADING, animate);
     }
 
     /**
@@ -363,7 +365,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
      * @param animate If true, an animation will be used to transition to the new
      *                state.
      */
-    private void setViewShown(INTERAL_VIEW_TYPE type, boolean animate) {
+    private void setViewShown(INTERNAL_VIEW type, boolean animate) {
         ensureAbsList();
         if (mProgressContainer == null) {
             throw new IllegalStateException(
@@ -375,13 +377,13 @@ public abstract class MultiStateAbsFragment extends Fragment {
         }
         if (currentVisibleView == type)
             return;
-        INTERAL_VIEW_TYPE previous = currentVisibleView;
+        INTERNAL_VIEW previous = currentVisibleView;
         currentVisibleView = type;
 
         if (animate) {
             switch (type) {
                 case ERROR:
-                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
+                    if (previous == INTERNAL_VIEW.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
@@ -394,7 +396,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
                             getActivity(), android.R.anim.fade_in));
                     break;
                 case LIST:
-                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
+                    if (previous == INTERNAL_VIEW.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
@@ -407,7 +409,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
                     break;
                 case LOADING:
-                    if (previous == INTERAL_VIEW_TYPE.LIST) {
+                    if (previous == INTERNAL_VIEW.LIST) {
                         mAbsListContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));

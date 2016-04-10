@@ -30,9 +30,10 @@ public abstract class MultiStateFragment extends Fragment {
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0001;
     static final int INTERNAL_MAIN_CONTAINER_ID = 0x00ff0002;
     static final int INTERNAL_ERROR_CONTAINER_ID = 0x00ff0003;
+    static final int INTERNAL_EMPTY_LAYOUT_ID = 0x00ff0004;
 
-    public enum INTERAL_VIEW_TYPE {
-        MAIN, LOADING, ERROR
+    public enum INTERNAL_VIEW_TYPE {
+        MAIN, LOADING, ERROR, EMPTY
     }
 
     ;
@@ -45,10 +46,11 @@ public abstract class MultiStateFragment extends Fragment {
     View mProgressContainer;
     View mMainContainer;
     View mErrorView;
+    View mEmptyView;
     TextView mErrorText;
     SwipeRefreshLayout mSwipeToRefresh;
 
-    INTERAL_VIEW_TYPE currentVisibileView = INTERAL_VIEW_TYPE.MAIN;
+    INTERNAL_VIEW_TYPE currentVisibileView = INTERNAL_VIEW_TYPE.MAIN;
 
     public MultiStateFragment() {
     }
@@ -86,6 +88,16 @@ public abstract class MultiStateFragment extends Fragment {
         final Context context = getActivity();
 
         FrameLayout root = new FrameLayout(context);
+        //------------------------EMPTY  container
+        View emptyView = getEmptyView(context);
+        if (emptyView != null) {
+            emptyView.setId(INTERNAL_EMPTY_LAYOUT_ID);
+            emptyView.setVisibility(View.GONE);
+            root.addView(emptyView, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    ViewGroup.LayoutParams.FILL_PARENT));
+            mEmptyView = emptyView;
+        }
 
         // ------------------------------Error
         // container------------------------------------
@@ -209,7 +221,7 @@ public abstract class MultiStateFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if (supportSwipeToRefresh())
-            mSwipeToRefresh.setColorScheme(getSwipeToRefreshColorSchemeResource1(), getSwipeToRefreshColorSchemeResource2(), getSwipeToRefreshColorSchemeResource3(), getSwipeToRefreshColorSchemeResource4());
+            mSwipeToRefresh.setColorSchemeResources(getSwipeToRefreshColorSchemeResource1(), getSwipeToRefreshColorSchemeResource2(), getSwipeToRefreshColorSchemeResource3(), getSwipeToRefreshColorSchemeResource4());
         super.onViewCreated(view, savedInstanceState);
 
     }
@@ -230,6 +242,10 @@ public abstract class MultiStateFragment extends Fragment {
         return R.color.schema4;
     }
 
+    protected View getEmptyView(Context context) {
+        return null;
+    }
+
     /**
      * Detach from list view.
      */
@@ -237,7 +253,7 @@ public abstract class MultiStateFragment extends Fragment {
     public void onDestroyView() {
 
 
-        mErrorView = mProgressContainer = mMainContainer = null;
+        mErrorView = mEmptyView = mProgressContainer = mMainContainer = null;
         mErrorText = null;
         mStandardEmptyView = null;
         mSwipeToRefresh = null;
@@ -260,17 +276,22 @@ public abstract class MultiStateFragment extends Fragment {
 
     protected void showMainView(boolean animate) {
 
-        setViewShown(INTERAL_VIEW_TYPE.MAIN, animate);
+        setViewShown(INTERNAL_VIEW_TYPE.MAIN, animate);
     }
 
     protected void showErrorView(boolean animate) {
 
-        setViewShown(INTERAL_VIEW_TYPE.ERROR, animate);
+        setViewShown(INTERNAL_VIEW_TYPE.ERROR, animate);
     }
 
     protected void showLoadingView(boolean animate) {
 
-        setViewShown(INTERAL_VIEW_TYPE.LOADING, animate);
+        setViewShown(INTERNAL_VIEW_TYPE.LOADING, animate);
+    }
+
+
+    protected void showEmptyView(boolean animate) {
+        setViewShown(INTERNAL_VIEW_TYPE.EMPTY, animate);
     }
 
     /**
@@ -283,7 +304,7 @@ public abstract class MultiStateFragment extends Fragment {
      * @param animate If true, an animation will be used to transition to the new
      *                state.
      */
-    private void setViewShown(INTERAL_VIEW_TYPE type, boolean animate) {
+    private void setViewShown(INTERNAL_VIEW_TYPE type, boolean animate) {
         if (mProgressContainer == null) {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
@@ -294,47 +315,80 @@ public abstract class MultiStateFragment extends Fragment {
         }
         if (currentVisibileView == type)
             return;
-        INTERAL_VIEW_TYPE previous = currentVisibileView;
+        INTERNAL_VIEW_TYPE previous = currentVisibileView;
         currentVisibileView = type;
 
         if (animate) {
             switch (type) {
                 case ERROR:
-                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
+                    if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
-                    } else {
+                    } else if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
+                    } else {
+                        if (mEmptyView != null) {
+                            mEmptyView.startAnimation(AnimationUtils
+                                    .loadAnimation(getActivity(),
+                                            android.R.anim.fade_out));
+                        }
                     }
                     mErrorView.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
                     break;
                 case MAIN:
-                    if (previous == INTERAL_VIEW_TYPE.LOADING) {
+                    if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
-                    } else {
+                    } else if (previous == INTERNAL_VIEW_TYPE.ERROR) {
                         mErrorView.startAnimation(AnimationUtils.loadAnimation(
                                 getActivity(), android.R.anim.fade_out));
+                    } else {
+                        if (mEmptyView != null) {
+                            mEmptyView.startAnimation(AnimationUtils.loadAnimation(
+                                    getActivity(), android.R.anim.fade_out));
+                        }
                     }
                     mMainContainer.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
 
                     break;
                 case LOADING:
-                    if (previous == INTERAL_VIEW_TYPE.MAIN) {
+                    if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
+                                .loadAnimation(getActivity(),
+                                        android.R.anim.fade_out));
+                    } else if (previous == INTERNAL_VIEW_TYPE.ERROR) {
+                        mErrorView.startAnimation(AnimationUtils.loadAnimation(
+                                getActivity(), android.R.anim.fade_out));
+                    } else {
+                        if (mEmptyView != null) {
+                            mEmptyView.startAnimation(AnimationUtils.loadAnimation(
+                                    getActivity(), android.R.anim.fade_out));
+                        }
+                    }
+                    mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
+                            getActivity(), android.R.anim.fade_in));
+
+                    break;
+                case EMPTY:
+                    if (previous == INTERNAL_VIEW_TYPE.MAIN) {
+                        mMainContainer.startAnimation(AnimationUtils
+                                .loadAnimation(getActivity(),
+                                        android.R.anim.fade_out));
+                    } else if (previous == INTERNAL_VIEW_TYPE.LOADING) {
+                        mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
                                         android.R.anim.fade_out));
                     } else {
                         mErrorView.startAnimation(AnimationUtils.loadAnimation(
                                 getActivity(), android.R.anim.fade_out));
                     }
-                    mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
+                    mEmptyView.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
                     break;
             }
@@ -343,26 +397,48 @@ public abstract class MultiStateFragment extends Fragment {
             mErrorView.clearAnimation();
             mProgressContainer.clearAnimation();
             mMainContainer.clearAnimation();
+            if (mEmptyView != null) {
+                mEmptyView.clearAnimation();
+            }
         }
 
         switch (type) {
-            case MAIN:
+            case MAIN: {
                 mErrorView.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
+                if (mEmptyView != null) {
+                    mEmptyView.setVisibility(View.GONE);
+                }
                 mMainContainer.setVisibility(View.VISIBLE);
+            }
+            break;
 
-                break;
-
-            case LOADING:
+            case LOADING: {
                 mErrorView.setVisibility(View.GONE);
                 mMainContainer.setVisibility(View.GONE);
+                if (mEmptyView != null) {
+                    mEmptyView.setVisibility(View.GONE);
+                }
                 mProgressContainer.setVisibility(View.VISIBLE);
-                break;
-            case ERROR:
+            }
+            break;
+            case ERROR: {
                 mMainContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
+                if (mEmptyView != null) {
+                    mEmptyView.setVisibility(View.GONE);
+                }
                 mErrorView.setVisibility(View.VISIBLE);
-                break;
+            }
+            case EMPTY: {
+                mMainContainer.setVisibility(View.GONE);
+                mProgressContainer.setVisibility(View.GONE);
+                mErrorView.setVisibility(View.GONE);
+                if (mEmptyView != null) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                }
+            }
+            break;
 
         }
     }
