@@ -39,7 +39,6 @@ public abstract class MultiStateAbsFragment extends Fragment {
     static final int INTERNAL_REFRESH_LAYOUT_ID = 0x00ff0005;
 
 
-
     public enum INTERNAL_VIEW {
         LIST, LOADING, ERROR
     }
