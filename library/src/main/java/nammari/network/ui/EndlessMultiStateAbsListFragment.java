@@ -235,6 +235,10 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         }
     }
 
+    protected int getAdapterErrorLoadingErrorViewId() {
+        return 0;
+    }
+
     protected class NetworkWrapperAdapter extends RecyclerView.Adapter {
 
         private static final int VIEW_TYPE_LOADING = 22;
@@ -273,6 +277,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             : 0);
         }
 
+
         @Override
         public long getItemId(int position) {
             return getItemViewType(position) == VIEW_TYPE_LOADING ? -1
@@ -283,7 +288,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_LOADING) {
-                return new ListLoadingViewHolder(inflater.inflate(R.layout.list_endless_loading_view, parent, false));
+                return new ListLoadingViewHolder(inflater.inflate((getAdapterErrorLoadingErrorViewId() == 0 ? R.layout.list_endless_loading_view : getAdapterErrorLoadingErrorViewId()), parent, false));
             } else {
                 return mainAdapter.onCreateViewHolder(parent, viewType - 1);
             }
@@ -295,7 +300,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             if (position < mainAdapter.getItemCount()) {
                 mainAdapter.onBindViewHolder(holder, position);
             } else {
-
                 ListLoadingViewHolder holder1 = (ListLoadingViewHolder) holder;
                 if (hasError() && !isLoading()) {
                     // show error
@@ -310,7 +314,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             .setVisibility(View.GONE);
                     holder1.loading_container.setVisibility(View.VISIBLE);
                 }
-
             }
         }
 
@@ -350,9 +353,9 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
         public ListLoadingViewHolder(View itemView) {
             super(itemView);
-            loading_container = itemView.findViewById(R.id.loading_container);
-            button1 = itemView.findViewById(R.id.button1);
-            error_container = itemView.findViewById(R.id.error_container);
+            loading_container = itemView.findViewById(R.id.nammarinetwork__loading_container);
+            button1 = itemView.findViewById(R.id.nammarinetwork__button1);
+            error_container = itemView.findViewById(R.id.nammarinetwork__error_container);
         }
     }
 
@@ -387,7 +390,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button1) {
+        if (v.getId() == R.id.nammarinetwork__button1) {
             if (!isLoading()) {
                 loadMore();
                 mHandler.post(new Runnable() {

@@ -144,67 +144,92 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
         // ------------------------------Error
         // container------------------------------------
+        View customErrorView = getCustomErrorView(context);
+        if (customErrorView == null) {
+            LinearLayout eframe = new LinearLayout(context);
+            eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
+            eframe.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout eframe = new LinearLayout(context);
-        eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
-        eframe.setOrientation(LinearLayout.VERTICAL);
+            eframe.setGravity(Gravity.CENTER);
+            eframe.setVisibility(View.GONE);
+            ImageView error_image = new ImageView(context);
+            error_image.setImageResource(R.drawable.alert_error);
+            final float scale = getResources().getDisplayMetrics().density;
 
-        eframe.setGravity(Gravity.CENTER);
-        eframe.setVisibility(View.GONE);
-        ImageView error_image = new ImageView(context);
-        error_image.setImageResource(R.drawable.alert_error);
-        final float scale = getResources().getDisplayMetrics().density;
+            eframe.addView(error_image, new FrameLayout.LayoutParams(
+                    (int) (scale * 75), (int) (scale * 75)));
+            // ViewGroup.LayoutParams.WRAP_CONTENT,
+            // ViewGroup.LayoutParams.WRAP_CONTENT));
+            mErrorText = new TextView(context);
+            mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+            mErrorText.setText(R.string.no_connection);
+            mErrorText.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            // errorTextLayoutParams.weight = 1.0f;
 
-        eframe.addView(error_image, new FrameLayout.LayoutParams(
-                (int) (scale * 75), (int) (scale * 75)));
-        // ViewGroup.LayoutParams.WRAP_CONTENT,
-        // ViewGroup.LayoutParams.WRAP_CONTENT));
-        mErrorText = new TextView(context);
-        mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-        mErrorText.setText(R.string.no_connection);
-        mErrorText.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        // errorTextLayoutParams.weight = 1.0f;
+            eframe.addView(mErrorText, errorTextLayoutParams);
 
-        eframe.addView(mErrorText, errorTextLayoutParams);
-
-        Button retry = new Button(context);
-        retry.setText(R.string.retry);
-        retry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onErrorRetry();
+            Button retry = new Button(context);
+            retry.setText(R.string.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onErrorRetry();
+                }
+            });
+            eframe.addView(retry, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            root.addView(eframe, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            mErrorView = eframe;
+        } else {
+            customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
+            customErrorView.setVisibility(View.GONE);
+            mErrorView = customErrorView;
+            root.addView(customErrorView, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            View retryView = customErrorView.findViewById(getCustomRetryViewId());
+            if (retryView != null) {
+                retryView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onErrorRetry();
+                    }
+                });
             }
-        });
-        eframe.addView(retry, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        root.addView(eframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
-        mErrorView = eframe;
-
+        }
         // ------------------------------Progress
         // container------------------------------------
+        View customProgressLayout = getCustomProgressView(context);
+        if (customProgressLayout == null) {
+            LinearLayout pframe = new LinearLayout(context);
+            pframe.setId(INTERNAL_PROGRESS_CONTAINER_ID);
+            pframe.setOrientation(LinearLayout.VERTICAL);
+            pframe.setVisibility(View.GONE);
+            pframe.setGravity(Gravity.CENTER);
 
-        LinearLayout pframe = new LinearLayout(context);
-        pframe.setId(INTERNAL_PROGRESS_CONTAINER_ID);
-        pframe.setOrientation(LinearLayout.VERTICAL);
-        pframe.setVisibility(View.GONE);
-        pframe.setGravity(Gravity.CENTER);
+            ProgressBar progress = new ProgressBar(context, null,
+                    android.R.attr.progressBarStyle);
+            pframe.addView(progress, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        ProgressBar progress = new ProgressBar(context, null,
-                android.R.attr.progressBarStyle);
-        pframe.addView(progress, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        root.addView(pframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
-
+            root.addView(pframe, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            customProgressLayout.setId(INTERNAL_PROGRESS_CONTAINER_ID);
+            customProgressLayout.setVisibility(View.GONE);
+            mProgressContainer = customProgressLayout;
+            root.addView(customProgressLayout, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+        }
         // -----------------------------LIST
         // container-------------------------------------
 
@@ -237,29 +262,29 @@ public abstract class MultiStateAbsFragment extends Fragment {
         if (supportSwipeToRefreshLayout()) {
             swipeRefreshLayout = new ListSwipeRefreshLayout(getActivity());
             swipeRefreshLayout.addView(lv, new SwipeRefreshLayout.LayoutParams(
-                            SwipeRefreshLayout.LayoutParams.FILL_PARENT,
-                            SwipeRefreshLayout.LayoutParams.FILL_PARENT
+                            SwipeRefreshLayout.LayoutParams.MATCH_PARENT,
+                            SwipeRefreshLayout.LayoutParams.MATCH_PARENT
                     )
             );
             swipeRefreshLayout.setId(INTERNAL_REFRESH_LAYOUT_ID);
             swipeRefreshLayout.setOnRefreshListener(swipeListener);
             lframe.addView(swipeRefreshLayout, new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.FILL_PARENT));
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             lframe.addView(lv, new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.FILL_PARENT));
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         }
         root.addView(lframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
         // ------------------------------------------------------------------
 
         root.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
         return root;
     }
@@ -502,5 +527,18 @@ public abstract class MultiStateAbsFragment extends Fragment {
     public void setRefreshForSwipeRefreshLayout(boolean refreshing) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+
+    protected View getCustomProgressView(Context context) {
+        return null;
+    }
+
+    protected View getCustomErrorView(Context context) {
+        return null;
+    }
+
+    protected int getCustomRetryViewId() {
+        return 0;
     }
 }

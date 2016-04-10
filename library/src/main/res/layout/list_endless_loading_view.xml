@@ -4,21 +4,21 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/error_container"
+        android:id="@+id/nammarinetwork__error_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/warning"
+            android:id="@+id/nammarinetwork__warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="11dp"
             android:src="@drawable/alert_error" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/nammarinetwork__textView1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/nammarinetwork__button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="11dp"
@@ -36,7 +36,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/loading_container"
+        android:id="@+id/nammarinetwork__loading_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:paddingBottom="10dp"

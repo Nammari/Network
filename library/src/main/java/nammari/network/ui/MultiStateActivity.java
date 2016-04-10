@@ -1,5 +1,6 @@
 package nammari.network.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0001;
     static final int INTERNAL_MAIN_CONTAINER_ID = 0x00ff0002;
     static final int INTERNAL_ERROR_CONTAINER_ID = 0x00ff0003;
-    static final int INTERNAL_EMPTY_CONAINER_ID = 0x00ff0004;
+    static final int INTERNAL_EMPTY_CONTAINER_ID = 0x00ff0004;
 
     public enum INTERNAL_VIEW_TYPE {
         MAIN, LOADING, ERROR, EMPTY
@@ -48,7 +49,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
     TextView mErrorText;
     SwipeRefreshLayout mSwipeToRefresh;
 
-    INTERNAL_VIEW_TYPE currentVisibileView = INTERNAL_VIEW_TYPE.MAIN;
+    INTERNAL_VIEW_TYPE currentVisibleView = INTERNAL_VIEW_TYPE.MAIN;
 
 
     protected abstract void onErrorRetry();
@@ -71,7 +72,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         //empty container
         View emptyView = getEmptyView();
         if (emptyView != null) {
-            emptyView.setId(INTERNAL_EMPTY_CONAINER_ID);
+            emptyView.setId(INTERNAL_EMPTY_CONTAINER_ID);
             emptyView.setVisibility(View.GONE);
             root.addView(emptyView, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -80,68 +81,93 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         }
         // ------------------------------Error
         // container------------------------------------
+        View customErrorView = getCustomErrorView(this);
+        if (customErrorView == null) {
+            LinearLayout eframe = new LinearLayout(this);
+            eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
+            eframe.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout eframe = new LinearLayout(this);
-        eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
-        eframe.setOrientation(LinearLayout.VERTICAL);
+            eframe.setGravity(Gravity.CENTER);
+            eframe.setVisibility(View.GONE);
+            ImageView error_image = new ImageView(this);
+            error_image.setImageResource(R.drawable.alert_error);
+            final float scale = getResources().getDisplayMetrics().density;
 
-        eframe.setGravity(Gravity.CENTER);
-        eframe.setVisibility(View.GONE);
-        ImageView error_image = new ImageView(this);
-        error_image.setImageResource(R.drawable.alert_error);
-        final float scale = getResources().getDisplayMetrics().density;
+            eframe.addView(error_image, new FrameLayout.LayoutParams(
+                    (int) (scale * 75), (int) (scale * 75)));
+            // ViewGroup.LayoutParams.WRAP_CONTENT,
+            // ViewGroup.LayoutParams.WRAP_CONTENT));
+            mErrorText = new TextView(this);
+            mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+            mErrorText.setText(R.string.no_connection);
+            mErrorText.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            // errorTextLayoutParams.weight = 1.0f;
 
-        eframe.addView(error_image, new FrameLayout.LayoutParams(
-                (int) (scale * 75), (int) (scale * 75)));
-        // ViewGroup.LayoutParams.WRAP_CONTENT,
-        // ViewGroup.LayoutParams.WRAP_CONTENT));
-        mErrorText = new TextView(this);
-        mErrorText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-        mErrorText.setText(R.string.no_connection);
-        mErrorText.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams errorTextLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        // errorTextLayoutParams.weight = 1.0f;
+            eframe.addView(mErrorText, errorTextLayoutParams);
 
-        eframe.addView(mErrorText, errorTextLayoutParams);
-
-        Button retry = new Button(this);
-        retry.setText(R.string.retry);
-        retry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onErrorRetry();
+            Button retry = new Button(this);
+            retry.setText(R.string.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onErrorRetry();
+                }
+            });
+            eframe.addView(retry, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            root.addView(eframe, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            mErrorView = eframe;
+        } else {
+            customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
+            customErrorView.setVisibility(View.GONE);
+            mEmptyView = customErrorView;
+            root.addView(customErrorView, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            View retryView = customErrorView.findViewById(getCustomRetryViewId());
+            if (retryView != null) {
+                retryView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onErrorRetry();
+                    }
+                });
             }
-        });
-        eframe.addView(retry, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        root.addView(eframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
-        mErrorView = eframe;
-
+        }
         // ------------------------------Progress
         // container------------------------------------
+        View customProgressLayout = getCustomProgressView(this);
+        if (customProgressLayout == null) {
+            LinearLayout pframe = new LinearLayout(this);
+            pframe.setId(INTERNAL_PROGRESS_CONTAINER_ID);
+            pframe.setOrientation(LinearLayout.VERTICAL);
+            pframe.setVisibility(View.GONE);
+            pframe.setGravity(Gravity.CENTER);
 
-        LinearLayout pframe = new LinearLayout(this);
-        pframe.setId(INTERNAL_PROGRESS_CONTAINER_ID);
-        pframe.setOrientation(LinearLayout.VERTICAL);
-        pframe.setVisibility(View.GONE);
-        pframe.setGravity(Gravity.CENTER);
+            ProgressBar progress = new ProgressBar(this, null,
+                    android.R.attr.progressBarStyle);
+            pframe.addView(progress, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            mProgressContainer = pframe;
+            root.addView(pframe, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
 
-        ProgressBar progress = new ProgressBar(this, null,
-                android.R.attr.progressBarStyle);
-        pframe.addView(progress, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        mProgressContainer = pframe;
-        root.addView(pframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
-
-
+        } else {
+            customProgressLayout.setId(INTERNAL_PROGRESS_CONTAINER_ID);
+            customProgressLayout.setVisibility(View.GONE);
+            mProgressContainer = customProgressLayout;
+            root.addView(customProgressLayout, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+        }
         //Main container
 
         FrameLayout lframe = new FrameLayout(this);
@@ -157,8 +183,8 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                 mSwipeToRefresh = new SwipeRefreshLayout(this);
                 View v = LayoutInflater.from(this).inflate(getMainViewLayoutId(), mSwipeToRefresh, false);
                 mSwipeToRefresh.addView(v, new SwipeRefreshLayout.LayoutParams(
-                                SwipeRefreshLayout.LayoutParams.FILL_PARENT,
-                                SwipeRefreshLayout.LayoutParams.FILL_PARENT
+                                SwipeRefreshLayout.LayoutParams.MATCH_PARENT,
+                                SwipeRefreshLayout.LayoutParams.MATCH_PARENT
                         )
                 );
 
@@ -173,20 +199,20 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         }
         if (lv != null) {
             lframe.addView(lv, new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.FILL_PARENT));
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
         root.addView(lframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
         mMainContainer = lframe;
         // ------------------------------------------------------------------
 
         root.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
         setContentView(root);
         if (supportSwipeToRefresh()) {
@@ -267,10 +293,10 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
         }
-        if (currentVisibileView == type)
+        if (currentVisibleView == type)
             return;
-        INTERNAL_VIEW_TYPE previous = currentVisibileView;
-        currentVisibileView = type;
+        INTERNAL_VIEW_TYPE previous = currentVisibleView;
+        currentVisibleView = type;
 
         if (animate) {
             switch (type) {
@@ -395,6 +421,19 @@ public abstract class MultiStateActivity extends AppCompatActivity {
             break;
 
         }
+    }
+
+
+    protected View getCustomProgressView(Context context) {
+        return null;
+    }
+
+    protected View getCustomErrorView(Context context) {
+        return null;
+    }
+
+    protected int getCustomRetryViewId() {
+        return 0;
     }
 
 }
