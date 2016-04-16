@@ -146,7 +146,7 @@ public abstract class MultiStateFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
             View retryView = customErrorView.findViewById(getCustomRetryViewId());
-            if(retryView!=null) {
+            if (retryView != null) {
                 retryView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -343,7 +343,7 @@ public abstract class MultiStateFragment extends Fragment {
 
         if (animate) {
             switch (type) {
-                case ERROR:
+                case ERROR: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -361,8 +361,9 @@ public abstract class MultiStateFragment extends Fragment {
                     }
                     mErrorView.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-                    break;
-                case MAIN:
+                }
+                break;
+                case MAIN: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -378,9 +379,9 @@ public abstract class MultiStateFragment extends Fragment {
                     }
                     mMainContainer.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-
-                    break;
-                case LOADING:
+                }
+                break;
+                case LOADING: {
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -396,9 +397,9 @@ public abstract class MultiStateFragment extends Fragment {
                     }
                     mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-
-                    break;
-                case EMPTY:
+                }
+                break;
+                case EMPTY: {
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -413,9 +414,9 @@ public abstract class MultiStateFragment extends Fragment {
                     }
                     mEmptyView.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-                    break;
+                }
+                break;
             }
-
         } else {
             mErrorView.clearAnimation();
             mProgressContainer.clearAnimation();
