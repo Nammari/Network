@@ -36,7 +36,6 @@ public class AspectRatioImage extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         setMeasuredDimension(getMeasuredWidth(), (int) (getMeasuredWidth() / ratio));
     }
 }

@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import nammari.network.R;
+import nammari.network.ui.widget.CustomErrorView;
 import nammari.network.util.StringUtils;
 
 /**
@@ -81,7 +82,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         }
         // ------------------------------Error
         // container------------------------------------
-        View customErrorView = getCustomErrorView(this);
+        CustomErrorView customErrorView = getCustomErrorView(this);
         if (customErrorView == null) {
             LinearLayout eframe = new LinearLayout(this);
             eframe.setId(INTERNAL_ERROR_CONTAINER_ID);
@@ -124,16 +125,16 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT));
             mErrorView = eframe;
         } else {
-            customErrorView.setId(INTERNAL_ERROR_CONTAINER_ID);
-            customErrorView.setVisibility(View.GONE);
-            mErrorView = customErrorView;
-            mErrorText = (TextView) customErrorView.findViewById(android.R.id.text1);
-            root.addView(customErrorView, new FrameLayout.LayoutParams(
+            customErrorView.getCustomErrorView().setId(INTERNAL_ERROR_CONTAINER_ID);
+            customErrorView.getCustomErrorView().setVisibility(View.GONE);
+            mErrorView = customErrorView.getCustomErrorView();
+            mErrorText = (TextView) mErrorView.findViewById(android.R.id.text1);
+            root.addView(customErrorView.getCustomErrorView(), new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
-            View retryView = customErrorView.findViewById(getCustomRetryViewId());
-            if (retryView != null) {
-                retryView.setOnClickListener(new View.OnClickListener() {
+
+            if (customErrorView.getCustomRetryView() != null) {
+                customErrorView.getCustomRetryView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onErrorRetry();
@@ -432,12 +433,9 @@ public abstract class MultiStateActivity extends AppCompatActivity {
         return null;
     }
 
-    protected View getCustomErrorView(Context context) {
+    protected CustomErrorView getCustomErrorView(Context context) {
         return null;
     }
 
-    protected int getCustomRetryViewId() {
-        return 0;
-    }
 
 }

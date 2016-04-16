@@ -21,6 +21,8 @@ import nammari.network.R;
 import nammari.network.loader.EndlessNetworkLoader;
 import nammari.network.loader.ErrorAwareLoader;
 import nammari.network.logger.Logger;
+import nammari.network.ui.widget.CustomErrorView;
+import nammari.network.ui.widget.EndlessCustomErrorView;
 import nammari.network.ui.widget.ItemDecorationAlbumColumns;
 import nammari.network.ui.widget.PaddingItemDecoration;
 import nammari.network.util.LoaderErrorAwareHelper;
@@ -235,8 +237,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         }
     }
 
-    protected int getAdapterErrorLoadingErrorViewId() {
-        return 0;
+    protected EndlessCustomErrorView getAdapterErrorLoadingView(Context context) {
+        return null;
     }
 
     protected class NetworkWrapperAdapter extends RecyclerView.Adapter {
@@ -288,7 +290,13 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == VIEW_TYPE_LOADING) {
-                return new ListLoadingViewHolder(inflater.inflate((getAdapterErrorLoadingErrorViewId() == 0 ? R.layout.nammarinetwork__list_endless_loading_view : getAdapterErrorLoadingErrorViewId()), parent, false));
+                EndlessCustomErrorView customErrorView = getAdapterErrorLoadingView(parent.getContext());
+                if (customErrorView == null) {
+                    return new ListLoadingViewHolder(inflater.inflate(R.layout.nammarinetwork__list_endless_loading_view, parent, false));
+                } else {
+                    return new ListLoadingViewHolder(customErrorView.getRoot(), customErrorView.getLoadingContainer(), customErrorView.getRetryButton(), customErrorView.getErrroContainer());
+                }
+
             } else {
                 return mainAdapter.onCreateViewHolder(parent, viewType);
             }
@@ -359,6 +367,14 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             button1 = itemView.findViewById(R.id.nammarinetwork__button1);
             error_container = itemView.findViewById(R.id.nammarinetwork__error_container);
         }
+
+        public ListLoadingViewHolder(View itemView, View loadingContainer, View retryButton, View errorView) {
+            super(itemView);
+            loading_container = loadingContainer;
+            button1 = retryButton;
+            error_container = errorView;
+        }
+
     }
 
 
