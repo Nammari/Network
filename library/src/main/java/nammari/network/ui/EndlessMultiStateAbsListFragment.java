@@ -290,16 +290,14 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             if (viewType == VIEW_TYPE_LOADING) {
                 return new ListLoadingViewHolder(inflater.inflate((getAdapterErrorLoadingErrorViewId() == 0 ? R.layout.nammarinetwork__list_endless_loading_view : getAdapterErrorLoadingErrorViewId()), parent, false));
             } else {
-                return mainAdapter.onCreateViewHolder(parent, viewType - 1);
+                return mainAdapter.onCreateViewHolder(parent, viewType);
             }
         }
 
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (position < mainAdapter.getItemCount()) {
-                mainAdapter.onBindViewHolder(holder, position);
-            } else {
+            if (getItemViewType(position) == VIEW_TYPE_LOADING) {
                 ListLoadingViewHolder holder1 = (ListLoadingViewHolder) holder;
                 if (hasError() && !isLoading()) {
                     // show error
@@ -314,7 +312,11 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             .setVisibility(View.GONE);
                     holder1.loading_container.setVisibility(View.VISIBLE);
                 }
+            } else {
+
+                mainAdapter.onBindViewHolder(holder, position);
             }
+
         }
 
 
