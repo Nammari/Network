@@ -332,6 +332,7 @@ public abstract class MultiStateFragment extends Fragment {
      *                state.
      */
     private void setViewShown(INTERNAL_VIEW_TYPE type, boolean animate) {
+        new Error().printStackTrace();
         if (mProgressContainer == null) {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
