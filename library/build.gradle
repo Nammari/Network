@@ -26,7 +26,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.18"
+        versionName "1.0.19"
     }
 
     buildTypes {
@@ -49,7 +49,7 @@ android {
 def siteUrl = 'https://github.com/Nammari/Network'      // Homepage URL of the library
 def gitUrl = 'https://github.com/Nammari/Network.git'   // Git repository URL
 group = "nammari.network"                                        // Maven Group ID for the artifact
-version = "1.0.18"
+version = "1.0.19"
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
@@ -145,8 +145,8 @@ bintray {
         publish = true
         version {
             // the 2 functions here, are building the version number
-            name = "1.0.18" // i.e. 1.0.0-SomeName
-            vcsTag = "1.0.18"  // 1.0.0
+            name = "1.0.19" // i.e. 1.0.0-SomeName
+            vcsTag = "1.0.19"  // 1.0.0
             gpg {
                 // keys are uploaded
                 sign = true
