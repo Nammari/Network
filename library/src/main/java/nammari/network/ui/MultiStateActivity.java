@@ -413,6 +413,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                 }
                 mErrorView.setVisibility(View.VISIBLE);
             }
+            break;
             case EMPTY: {
                 mMainContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -332,7 +332,6 @@ public abstract class MultiStateFragment extends Fragment {
      *                state.
      */
     private void setViewShown(INTERNAL_VIEW_TYPE type, boolean animate) {
-        new Error().printStackTrace();
         if (mProgressContainer == null) {
             throw new IllegalStateException(
                     "Can't be used with a custom content view");
@@ -349,7 +348,6 @@ public abstract class MultiStateFragment extends Fragment {
         if (animate) {
             switch (type) {
                 case ERROR: {
-                    Log.d("showError", "-");
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -370,7 +368,6 @@ public abstract class MultiStateFragment extends Fragment {
                 }
                 break;
                 case MAIN: {
-                    Log.d("showMAIN", "-");
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -389,7 +386,6 @@ public abstract class MultiStateFragment extends Fragment {
                 }
                 break;
                 case LOADING: {
-                    Log.d("showLoading", "-");
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -408,7 +404,6 @@ public abstract class MultiStateFragment extends Fragment {
                 }
                 break;
                 case EMPTY: {
-                    Log.d("showEmpty", "-");
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -437,7 +432,6 @@ public abstract class MultiStateFragment extends Fragment {
 
         switch (type) {
             case MAIN: {
-                Log.d("showMain", "-");
                 mErrorView.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
                 if (mEmptyView != null) {
@@ -446,9 +440,7 @@ public abstract class MultiStateFragment extends Fragment {
                 mMainContainer.setVisibility(View.VISIBLE);
             }
             break;
-
             case LOADING: {
-                Log.d("showLoading", "-");
                 mErrorView.setVisibility(View.GONE);
                 mMainContainer.setVisibility(View.GONE);
                 if (mEmptyView != null) {
@@ -458,7 +450,6 @@ public abstract class MultiStateFragment extends Fragment {
             }
             break;
             case ERROR: {
-                Log.d("showError", "-");
                 mMainContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
                 if (mEmptyView != null) {
@@ -466,8 +457,8 @@ public abstract class MultiStateFragment extends Fragment {
                 }
                 mErrorView.setVisibility(View.VISIBLE);
             }
+            break;
             case EMPTY: {
-                Log.d("showEmpty", "-");
                 mMainContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
                 mErrorView.setVisibility(View.GONE);
