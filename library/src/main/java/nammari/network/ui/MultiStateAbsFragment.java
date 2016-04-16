@@ -43,8 +43,6 @@ public abstract class MultiStateAbsFragment extends Fragment {
         LIST, LOADING, ERROR
     }
 
-    ;
-
     public enum LIST_TYPE {
         LIST_VIEW, GRID_VIEW, STAGGERED_GRID
     }
@@ -408,7 +406,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
 
         if (animate) {
             switch (type) {
-                case ERROR:
+                case ERROR: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -420,8 +418,9 @@ public abstract class MultiStateAbsFragment extends Fragment {
                     }
                     mErrorView.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-                    break;
-                case LIST:
+                }
+                break;
+                case LIST: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -432,9 +431,9 @@ public abstract class MultiStateAbsFragment extends Fragment {
                     }
                     mAbsListContainer.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-
-                    break;
-                case LOADING:
+                }
+                break;
+                case LOADING: {
                     if (previous == INTERNAL_VIEW_TYPE.LIST) {
                         mAbsListContainer.startAnimation(AnimationUtils
                                 .loadAnimation(getActivity(),
@@ -445,7 +444,8 @@ public abstract class MultiStateAbsFragment extends Fragment {
                     }
                     mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
                             getActivity(), android.R.anim.fade_in));
-                    break;
+                }
+                break;
             }
 
         } else {
@@ -455,24 +455,25 @@ public abstract class MultiStateAbsFragment extends Fragment {
         }
 
         switch (type) {
-            case LIST:
-
+            case LIST: {
                 mAbsListContainer.setVisibility(View.VISIBLE);
                 mErrorView.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
+            }
+            break;
 
-                break;
-
-            case LOADING:
+            case LOADING: {
                 mErrorView.setVisibility(View.GONE);
                 mAbsListContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.VISIBLE);
-                break;
-            case ERROR:
+            }
+            break;
+            case ERROR: {
                 mAbsListContainer.setVisibility(View.GONE);
                 mProgressContainer.setVisibility(View.GONE);
                 mErrorView.setVisibility(View.VISIBLE);
-                break;
+            }
+            break;
 
         }
     }

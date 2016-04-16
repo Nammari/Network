@@ -301,7 +301,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
 
         if (animate) {
             switch (type) {
-                case ERROR:
+                case ERROR: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(this,
@@ -319,8 +319,9 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                     }
                     mErrorView.startAnimation(AnimationUtils.loadAnimation(
                             this, android.R.anim.fade_in));
-                    break;
-                case MAIN:
+                }
+                break;
+                case MAIN: {
                     if (previous == INTERNAL_VIEW_TYPE.LOADING) {
                         mProgressContainer.startAnimation(AnimationUtils
                                 .loadAnimation(this,
@@ -336,9 +337,9 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                     }
                     mMainContainer.startAnimation(AnimationUtils.loadAnimation(
                             this, android.R.anim.fade_in));
-
-                    break;
-                case LOADING:
+                }
+                break;
+                case LOADING: {
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(this,
@@ -354,9 +355,9 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                     }
                     mProgressContainer.startAnimation(AnimationUtils.loadAnimation(
                             this, android.R.anim.fade_in));
-
-                    break;
-                case EMPTY:
+                }
+                break;
+                case EMPTY: {
                     if (previous == INTERNAL_VIEW_TYPE.MAIN) {
                         mMainContainer.startAnimation(AnimationUtils
                                 .loadAnimation(this,
@@ -371,7 +372,8 @@ public abstract class MultiStateActivity extends AppCompatActivity {
                     }
                     mEmptyView.startAnimation(AnimationUtils.loadAnimation(
                             this, android.R.anim.fade_in));
-                    break;
+                }
+                break;
             }
 
         } else {
