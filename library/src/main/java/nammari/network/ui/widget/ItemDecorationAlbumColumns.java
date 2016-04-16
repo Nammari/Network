@@ -3,7 +3,12 @@ package nammari.network.ui.widget;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ViewUtils;
+import android.util.Log;
 import android.view.View;
+
+import java.util.Locale;
+
+import nammari.network.util.RTLUtils;
 
 /**
  * Created by nammari on 1/21/16.
@@ -22,7 +27,7 @@ public class ItemDecorationAlbumColumns extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        boolean isRtl = ViewUtils.isLayoutRtl(view);
+        boolean isRtl = RTLUtils.isRTL(Locale.getDefault());
         int frameWidth = (int) ((parent.getWidth() - (float) mSizeGridSpacingPx * (mGridSize - 1)) / mGridSize);
         int padding = parent.getWidth() / mGridSize - frameWidth;
         int itemPosition = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();
@@ -66,5 +71,15 @@ public class ItemDecorationAlbumColumns extends RecyclerView.ItemDecoration {
             outRect.right = mSizeGridSpacingPx / 2;
         }
         outRect.bottom = 0;
+    }
+
+    public static boolean isRTL() {
+        return isRTL(Locale.getDefault());
+    }
+
+    public static boolean isRTL(Locale locale) {
+        return
+                Character.getDirectionality(locale.getDisplayName().charAt(0)) ==
+                        Character.DIRECTIONALITY_RIGHT_TO_LEFT;
     }
 }
