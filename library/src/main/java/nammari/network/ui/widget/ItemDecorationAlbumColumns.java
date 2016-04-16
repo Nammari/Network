@@ -34,13 +34,13 @@ public class ItemDecorationAlbumColumns extends RecyclerView.ItemDecoration {
         if (itemPosition % mGridSize == 0) {
             outRect.left = isRtl ? padding : 0;
             outRect.right = isRtl ? 0 : padding;
-            mNeedLeftSpacing = true;
+            mNeedLeftSpacing = !isRtl;
         } else if ((itemPosition + 1) % mGridSize == 0) {
-            mNeedLeftSpacing = false;
+            mNeedLeftSpacing = isRtl;
             outRect.right = isRtl ? padding : 0;
             outRect.left = isRtl ? 0 : padding;
         } else if (mNeedLeftSpacing) {
-            mNeedLeftSpacing = false;
+            mNeedLeftSpacing = isRtl;
             if (isRtl) {
                 outRect.right = mSizeGridSpacingPx - padding;
                 if ((itemPosition + 2) % mGridSize == 0) {
@@ -57,11 +57,11 @@ public class ItemDecorationAlbumColumns extends RecyclerView.ItemDecoration {
                 }
             }
         } else if ((itemPosition + 2) % mGridSize == 0) {
-            mNeedLeftSpacing = false;
+            mNeedLeftSpacing = isRtl;
             outRect.left = isRtl ? mSizeGridSpacingPx - padding : mSizeGridSpacingPx / 2;
             outRect.right = isRtl ? mSizeGridSpacingPx / 2 : mSizeGridSpacingPx - padding;
         } else {
-            mNeedLeftSpacing = false;
+            mNeedLeftSpacing = isRtl;
             outRect.left = mSizeGridSpacingPx / 2;
             outRect.right = mSizeGridSpacingPx / 2;
         }
