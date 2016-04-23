@@ -237,12 +237,12 @@ public abstract class MultiStateAbsFragment extends Fragment {
         lframe.setId(INTERNAL_LIST_CONTAINER_ID);
 
         EmptyViewRecyclerView lv = new EmptyViewRecyclerView(getActivity());
-        View emptyView =getEmptyView();
-        if(emptyView!=null){
+        View emptyView = getEmptyView();
+        if (emptyView != null) {
             lframe.addView(emptyView, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
-            lv.setEmptyView(getEmptyView());
+            lv.setEmptyView(emptyView);
         }
         switch (getListType()) {
             case LIST_VIEW:
