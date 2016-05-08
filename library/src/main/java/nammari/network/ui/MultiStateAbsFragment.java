@@ -78,7 +78,7 @@ public abstract class MultiStateAbsFragment extends Fragment {
     View mAbsListContainer;
     View mErrorView;
     TextView mErrorText;
-    INTERNAL_VIEW_TYPE currentVisibleView = INTERNAL_VIEW_TYPE.LIST;
+    protected INTERNAL_VIEW_TYPE currentVisibleView = INTERNAL_VIEW_TYPE.LIST;
 
     public MultiStateAbsFragment() {
     }
