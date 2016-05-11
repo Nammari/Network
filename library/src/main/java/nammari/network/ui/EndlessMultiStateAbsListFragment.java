@@ -381,7 +381,9 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
     @Override
     public void onLoadFinished(Loader<T> arg0, T arg1) {
 
-
+        ErrorAwareLoader __loader = (ErrorAwareLoader) arg0;
+        LoaderErrorAwareHelper.updateSingleLoaderStatus(this,
+                __loader);
         if (arg0.getId() == getEndlessNetworkLoaderId()) {
             if (adapter != null) {
                 adapter.addData(arg1);
@@ -392,10 +394,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
-        ErrorAwareLoader __loader = (ErrorAwareLoader) arg0;
+
         Logger.logDebug("hasError", "" + __loader.containsError());
-        LoaderErrorAwareHelper.updateSingleLoaderStatus(this,
-                __loader);
         refreshActionbar();
         mHandler.post(new Runnable() {
             @Override
