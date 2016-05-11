@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -315,6 +316,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     holder1.button1
                             .setOnClickListener(EndlessMultiStateAbsListFragment.this);
                 } else {
+                    Log.d("hasMore", "" + hasMoreResults());
+                    Log.d("isLoading", "" + isLoading());
                     // show loading
                     holder1.error_container
                             .setVisibility(View.GONE);
