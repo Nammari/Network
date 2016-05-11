@@ -316,8 +316,9 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     holder1.button1
                             .setOnClickListener(EndlessMultiStateAbsListFragment.this);
                 } else {
-                    Logger.logDebug("hasMore", "" + hasMoreResults());
-                    Logger.logDebug("isLoading", "" + isLoading());
+                    Log.d("hasMore", "" + hasMoreResults());
+                    Log.d("isLoading", "" + isLoading());
+                    Log.d("hasError", "" + hasError());
                     // show loading
                     holder1.error_container
                             .setVisibility(View.GONE);
@@ -464,6 +465,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
+                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).isLoading();
             }
         }
@@ -490,6 +492,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
+                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).hasError();
             }
         }
@@ -503,6 +506,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
+                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).hasMoreResults();
             }
         }
