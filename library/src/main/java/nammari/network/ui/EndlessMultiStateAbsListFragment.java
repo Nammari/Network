@@ -187,13 +187,17 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                 scrollReachedTarget = firstVisibleITemPosition + visibleItemCount + visibleThreshold >= totalItemCount;
             } else {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = layoutManager.findLastVisibleItemPosition() - layoutManager.findFirstVisibleItemPosition();
-                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                int totalItemCount = layoutManager.getItemCount();
+                int visibleItemCount = layoutManager.findLastVisibleItemPosition() - layoutManager.findFirstVisibleItemPosition();//0
+                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();//0
+                int totalItemCount = layoutManager.getItemCount();//1
                 scrollReachedTarget = firstVisibleItem + visibleItemCount + visibleThreshold >= totalItemCount;
+                //0 + 1+5 >=1
             }
 
-
+            Log.d("scrollReachedTarget", "" + scrollReachedTarget);
+            Log.d("!isLoading()", "" + !isLoading());
+            Log.d("!hasError()", "" + !hasError());
+            Log.d("hasMoreResults()", "" + hasMoreResults());
             if (!isLoading() && !hasError() && hasMoreResults()
                     && scrollReachedTarget) {
                 if (isAdded()) {
@@ -201,6 +205,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             getEndlessNetworkLoaderId());
                     loader.setUseMax(true);
                 }
+                Log.d("loadd","more");
                 loadMore();
             }
 
@@ -316,9 +321,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     holder1.button1
                             .setOnClickListener(EndlessMultiStateAbsListFragment.this);
                 } else {
-                    Log.d("hasMore", "" + hasMoreResults());
-                    Log.d("isLoading", "" + isLoading());
-                    Log.d("hasError", "" + hasError());
                     // show loading
                     holder1.error_container
                             .setVisibility(View.GONE);
@@ -492,7 +494,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
-                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).hasError();
             }
         }
@@ -506,7 +507,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
-                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).hasMoreResults();
             }
         }
