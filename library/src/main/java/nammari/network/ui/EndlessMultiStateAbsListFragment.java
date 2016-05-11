@@ -467,7 +467,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                 return ((EndlessNetworkLoader<T>) loader).isLoading();
             }
         }
-        return true;
+        return false;
     }
 
     protected boolean isLoaderStatusUndefined() {
