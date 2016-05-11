@@ -205,7 +205,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             getEndlessNetworkLoaderId());
                     loader.setUseMax(true);
                 }
-                Log.d("loadd","more");
+                Log.d("loadd", "more");
                 loadMore();
             }
 
@@ -276,7 +276,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                                                     // is
                                                     // the first
                                                     // load
-                                                    || hasMoreResults() // ...or there's another
                                                     // page
                                                     || hasError() // ...or there's an error
                                                     ? 1 : 0
