@@ -316,8 +316,8 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     holder1.button1
                             .setOnClickListener(EndlessMultiStateAbsListFragment.this);
                 } else {
-                    Log.d("hasMore", "" + hasMoreResults());
-                    Log.d("isLoading", "" + isLoading());
+                    Logger.logDebug("hasMore", "" + hasMoreResults());
+                    Logger.logDebug("isLoading", "" + isLoading());
                     // show loading
                     holder1.error_container
                             .setVisibility(View.GONE);
@@ -384,9 +384,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
     @Override
     public void onLoadFinished(Loader<T> arg0, T arg1) {
 
-        ErrorAwareLoader __loader = (ErrorAwareLoader) arg0;
-        LoaderErrorAwareHelper.updateSingleLoaderStatus(this,
-                __loader);
         if (arg0.getId() == getEndlessNetworkLoaderId()) {
             if (adapter != null) {
                 adapter.addData(arg1);
@@ -398,6 +395,9 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
             adapter.notifyDataSetChanged();
         }
 
+        ErrorAwareLoader __loader = (ErrorAwareLoader) arg0;
+        LoaderErrorAwareHelper.updateSingleLoaderStatus(this,
+                __loader);
         Logger.logDebug("hasError", "" + __loader.containsError());
         refreshActionbar();
         mHandler.post(new Runnable() {
@@ -503,11 +503,10 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
-                Log.d("has__more", "fetch from laoder");
                 return ((EndlessNetworkLoader<T>) loader).hasMoreResults();
             }
         }
-        return true;
+        return false;
     }
 
     protected void loadMore() {
