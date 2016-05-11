@@ -503,6 +503,7 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
+                Log.d("has__more", "fetch from laoder");
                 return ((EndlessNetworkLoader<T>) loader).hasMoreResults();
             }
         }
