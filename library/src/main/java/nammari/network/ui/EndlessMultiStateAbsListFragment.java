@@ -9,7 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
+
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +22,6 @@ import nammari.network.R;
 import nammari.network.loader.EndlessNetworkLoader;
 import nammari.network.loader.ErrorAwareLoader;
 import nammari.network.logger.Logger;
-import nammari.network.ui.widget.CustomErrorView;
 import nammari.network.ui.widget.EndlessCustomErrorView;
 import nammari.network.ui.widget.ItemDecorationAlbumColumns;
 import nammari.network.ui.widget.PaddingItemDecoration;
@@ -195,10 +194,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                 //0 + 1+5 >=1
             }
 
-            Log.d("scrollReachedTarget", "" + scrollReachedTarget);
-            Log.d("!isLoading()", "" + !isLoading());
-            Log.d("!hasError()", "" + !hasError());
-            Log.d("hasMoreResults()", "" + hasMoreResults());
             if (!isLoading() && !hasError() && hasMoreResults()
                     && scrollReachedTarget) {
                 if (isAdded()) {
@@ -206,7 +201,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                             getEndlessNetworkLoaderId());
                     loader.setUseMax(true);
                 }
-                Log.d("loadd", "more");
                 loadMore();
             }
 
@@ -473,7 +467,6 @@ public abstract class EndlessMultiStateAbsListFragment<T> extends
                     getEndlessNetworkLoaderId());
 
             if (loader != null) {
-                Log.d("fromloader", "loader");
                 return ((EndlessNetworkLoader<T>) loader).isLoading();
             }
         }
