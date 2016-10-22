@@ -6,12 +6,12 @@ package nammari.network.util;
 public class StringUtils {
 
 
-    public static final boolean isBlink(String str){
+    public static final boolean isBlank(String str){
         return str == null || str.length()==0 || str.trim().length()==0;
     }
 
-    public static final boolean isBlinkOrNullStringHardCoded(String str){
-        return isBlink(str) || "null".equalsIgnoreCase(str.trim());
+    public static final boolean isBlankOrNullStringHardCoded(String str){
+        return StringUtils.isBlank(str) || "null".equalsIgnoreCase(str.trim());
     }
 
 }

@@ -255,7 +255,7 @@ public class LoaderErrorAwareHelper {
      */
 
 
-    public static interface LoaderErrorAwareUI {
+    public  interface LoaderErrorAwareUI {
         public void showMainUI(boolean animate);
 
         public void showErrorUI(boolean animate);
