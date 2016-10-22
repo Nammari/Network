@@ -59,7 +59,7 @@ public abstract class MultiStateFragment extends Fragment {
     protected void setErrorText(CharSequence text) {
         if (mErrorText == null)
             return;
-        if (!StringUtils.isBlink((String) text)) {
+        if (!StringUtils.isBlank((String) text)) {
             mErrorText.setText(text);
         } else {
             mErrorText.setText(R.string.nammarinetwork__general_error);

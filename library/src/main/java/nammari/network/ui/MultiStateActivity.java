@@ -58,7 +58,7 @@ public abstract class MultiStateActivity extends AppCompatActivity {
     protected void setErrorText(CharSequence text) {
         if (mErrorText == null)
             return;
-        if (!StringUtils.isBlink((String) text)) {
+        if (!StringUtils.isBlank((String) text)) {
             mErrorText.setText(text);
         } else {
             mErrorText.setText(R.string.nammarinetwork__general_error);

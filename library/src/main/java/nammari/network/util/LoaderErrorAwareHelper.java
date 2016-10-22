@@ -222,7 +222,7 @@ public class LoaderErrorAwareHelper {
                     .getCorrectLoaderManager().getLoader(listener.getLoaderIds()[i]);
             if (loader != null
                     && loader.containsError()
-                    && !StringUtils.isBlink(loader
+                    && !StringUtils.isBlank(loader
                     .getErrorMessage())) {
                 result = loader.getErrorMessage();
                 break;

@@ -26,7 +26,7 @@ public abstract class ApiEndlessNetworkLoader<T extends EndlessApiBaseBean> exte
     public String getErrorMessage() {
         if (data != null && data.getErrors() != null && !data.getErrors().isEmpty()) {
             String str = data.getErrors().get(0);
-            if (!StringUtils.isBlink(str))
+            if (!StringUtils.isBlank(str))
                 return str;
         }
         return super.getErrorMessage();
@@ -74,19 +74,19 @@ public abstract class ApiEndlessNetworkLoader<T extends EndlessApiBaseBean> exte
                     }
                 }
                 this.data.setErrors(data.getErrors());
-                this.data.setSuccess(data.getSuccess());
+                this.data.setSuccess(data.isSuccess());
             }
 
         }
         if (data != null) {
             if (useMax.get()) {
-                maxId = StringUtils.isBlink(data.getMax()) ? maxId :
+                maxId = StringUtils.isBlank(data.getMax()) ? maxId :
                         data.getMax();
             } else {
-                sinceId = StringUtils.isBlink(data.getSince()) ? sinceId : data.getSince();
+                sinceId = StringUtils.isBlank(data.getSince()) ? sinceId : data.getSince();
             }
-            if (StringUtils.isBlink(sinceId)) {
-                sinceId = StringUtils.isBlink(data.getSince()) ? sinceId : data.getSince();
+            if (StringUtils.isBlank(sinceId)) {
+                sinceId = StringUtils.isBlank(data.getSince()) ? sinceId : data.getSince();
             }
         }
         return returnNewObjectIfNotNull(this.data);

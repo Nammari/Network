@@ -16,7 +16,7 @@ public abstract class EndlessApiBaseBean<F> extends BaseApiBean {
         if (obj != null) {
             setDataList(obj.getDataList());
             setErrors(obj.getErrors());
-            setSuccess(obj.getSuccess());
+            setSuccess(obj.isSuccess());
         }
     }
 
